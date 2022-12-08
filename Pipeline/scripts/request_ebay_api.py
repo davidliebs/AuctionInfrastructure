@@ -8,19 +8,13 @@ load_dotenv()
 
 # pulling data from ebay api
 def pull_data_from_ebay_api(auction_df):
-	ebay_data = []
-	for index, row in auction_df.iterrows():
-		product_title = row["lot_title"]
+	uids, titles = auction_df["uid"].tolist(), auction_df["lot_title"].tolist()
 
-		body = {
-			"product-title": product_title
-		}
+	body = {
+		"uids_and_titles": {uids[i]:titles[i] for i in range(len(uids))}
+	}
 
-		res = requests.post(os.getenv("ebay_api_fetch_product_rrp_url"), json=body)
-		resell_price = res.json()
-		
-		ebay_data.append([row["uid"], resell_price])
+	res = requests.post(os.getenv("ebay_api_fetch_product_rrp_url"), json=body)
+	returned_data = res.json()
 
-	ebay_df = pd.DataFrame(ebay_data, columns=["uid", "avg-resell-price"])
-
-	return ebay_df
+	return returned_data

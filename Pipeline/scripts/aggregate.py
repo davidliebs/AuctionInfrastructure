@@ -4,8 +4,10 @@ import os
 
 load_dotenv()
 
-def aggregate_dfs(auction_df, ebay_df):
-	auction_df["avg_resell_price"] = ebay_df["avg-resell-price"].tolist()
+def aggregate_dfs(auction_df, ebay_prices):
+	auction_df["avg_resell_price"] = 0.0
+	for uid in ebay_prices:
+		auction_df.loc[auction_df["uid"]==int(uid), "avg_resell_price"] = ebay_prices[uid]
 
 	return auction_df
 
