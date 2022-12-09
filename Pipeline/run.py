@@ -21,7 +21,7 @@ def run_pipeline():
 	auction_df = clean_data.clean_data(raw_auction_data)
 	ebay_prices = ebay_api.pull_data_from_ebay_api(auction_df)
 	main_df = aggregate_data.aggregate(auction_df, ebay_prices)
-	load_data.load_data(main_df)
+	load_data.load_data(auction_url, main_df)
 
 	return "1"
 
