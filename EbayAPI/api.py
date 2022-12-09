@@ -1,5 +1,9 @@
 from flask import Flask, request, jsonify
 import scripts.ebay_crawler as ebay_crawler
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 
@@ -14,4 +18,4 @@ def find_avg_rrp():
 	
 	return jsonify(uid_price_dict)
 
-app.run(debug=True)
+app.run(port=int(os.getenv("api_port")))

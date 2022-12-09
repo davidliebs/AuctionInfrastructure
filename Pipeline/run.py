@@ -5,6 +5,10 @@ import scripts.aggregate as aggregate_data
 import scripts.load_data as load_data
 import pandas as pd
 from flask import Flask, request, jsonify
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 
@@ -21,4 +25,4 @@ def run_pipeline():
 
 	return "1"
 
-app.run(port=8888)
+app.run(port=int(os.getenv("api_port")))

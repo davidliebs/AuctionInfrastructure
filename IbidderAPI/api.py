@@ -1,5 +1,9 @@
 from flask import Flask, request, jsonify
 from scripts.ibidder_crawler import Crawler
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 
@@ -16,4 +20,4 @@ def scrape_auction():
 
 	return jsonify(crawler.product_data)
 
-app.run(debug=True, port=8000)
+app.run(port=int(os.getenv("api_port")))
