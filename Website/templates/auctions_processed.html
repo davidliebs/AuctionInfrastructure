@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Auctions Processed</title>
+	</head>
+
+	<body>
+		{% for i in auctions %}
+
+			<a href="/auction-data/?auction_uid={{i[0]}}"><h3>{{i[1]}}</h3></a>
+
+		{% endfor %}
+	</body>
+</html>

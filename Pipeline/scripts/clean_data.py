@@ -3,6 +3,7 @@ import os
 from dotenv import load_dotenv
 import json
 import pandas as pd
+from random import randint
 
 load_dotenv()
 
@@ -19,6 +20,9 @@ def clean_lot_titles(title):
 
 	return title
 
+def generate_uid():
+	return int("".join([str(randint(0,9)) for i in range(5)]))
+
 def clean_data(raw_auction_data):
 	df = pd.DataFrame(raw_auction_data)
 
@@ -26,6 +30,6 @@ def clean_data(raw_auction_data):
 	df["lot_title"] = df["lot_title"].apply(lambda x: clean_lot_titles(x))
 
 	df = df.sort_values("lot_price").drop_duplicates("lot_title", keep='first')
-	df["uid"] = df.index
+	df["uid"] = df["lot_url"].apply(lambda x: generate_uid())
 	
 	return df
