@@ -67,6 +67,35 @@ def auction_data():
 
 	conn.close()
 
-	return render_template("product_data.html", auction_products=auction_products)
+	return render_template("product_data.html", auction_uid=auction_uid, auction_products=auction_products)
+
+@app.route("/delete-auction/")
+def delete_auction():
+	auction_uid = request.args.get("auction_uid")
+
+	conn = mysql.connector.connect(
+		user=os.getenv("db_user"),
+		passwd=os.getenv("db_pwd"),
+		host=os.getenv("db_host"), 
+		port=int(os.getenv("db_port")),
+		db=os.getenv("db_database")
+	)
+	cur = conn.cursor()
+
+	# deleting all products from product_data
+	cur.execute("""
+		DELETE FROM product_data WHERE auction_uid = '{}'
+	""".format(auction_uid))
+
+	# deleting auction from auction_uid_to_url table
+	cur.execute("""
+		DELETE FROM auction_uid_to_url WHERE auction_uid = '{}'
+	""".format(auction_uid))
+
+	conn.commit()
+	conn.close()
+	
+	return redirect("/")
+
 
 app.run(debug=True, port=9999)
